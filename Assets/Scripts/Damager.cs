@@ -6,6 +6,8 @@ public class Damager : MonoBehaviour
 {
     [SerializeField]
     int health = 3;
+    [SerializeField]
+    float flashTime;
 
     void CheckDead()
     {
@@ -26,8 +28,16 @@ public class Damager : MonoBehaviour
     {
         if (other.tag == "Sword")
         {
+            StartCoroutine(ColorFlash());
             health--;
             CheckDead();
         }
+    }
+
+    IEnumerator ColorFlash()
+    {
+        GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(flashTime);
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 }
