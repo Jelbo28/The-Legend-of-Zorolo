@@ -11,15 +11,17 @@ public class Damager : MonoBehaviour
     [SerializeField]
     float flashTime = 0.2f;
 
+    private bool go = false;
     private bool gettum = false;
     private Transform target;
 
     void Update()
     {
         Debug.Log(gettum);
-        if (gettum == true)
+        if (gettum == true && go == true)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            //go = false;
+            gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, target.position, speed * Time.deltaTime);
         }
     }
 
@@ -48,9 +50,10 @@ public class Damager : MonoBehaviour
         }
         if (other.tag == "Player")
         {
-            target = other.GetComponent<Transform>();
+            //target = other.GetComponent<Transform>();
             Debug.Log("Whyyyyyy");
             gettum = true;
+            StartCoroutine(Move());
         }
     }
 
@@ -58,7 +61,8 @@ public class Damager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            CancelInvoke();
+            gettum = false;
+            go = false;
         }
     }
 
@@ -67,5 +71,18 @@ public class Damager : MonoBehaviour
         GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(flashTime);
         GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    IEnumerator Move()
+    {
+        while(gettum == true)
+        {
+            yield return new WaitForSeconds(1);
+            float x = Random.Range(-3f, 3f);
+            float y = Random.Range(-3f, 3f);
+            Debug.Log("What???");
+            target.position = new Vector3(x, y, 0);
+            go = true;
+        }
     }
 }
