@@ -7,7 +7,21 @@ public class Damager : MonoBehaviour
     [SerializeField]
     int health = 3;
     [SerializeField]
-    float flashTime;
+    float speed = 2f;
+    [SerializeField]
+    float flashTime = 0.2f;
+
+    private bool gettum = false;
+    private Transform target;
+
+    void Update()
+    {
+        Debug.Log(gettum);
+        if (gettum == true)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        }
+    }
 
     void CheckDead()
     {
@@ -31,6 +45,20 @@ public class Damager : MonoBehaviour
             StartCoroutine(ColorFlash());
             health--;
             CheckDead();
+        }
+        if (other.tag == "Player")
+        {
+            target = other.GetComponent<Transform>();
+            Debug.Log("Whyyyyyy");
+            gettum = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            CancelInvoke();
         }
     }
 
