@@ -106,7 +106,10 @@ public class Damager : MonoBehaviour
             }
             
             CheckDead();
-            StartCoroutine(ColorFlash());
+            if (gameObject.activeSelf == true)
+            {
+                StartCoroutine(ColorFlash());
+            }
         }
         //if (other.tag == "Player")
         //{
