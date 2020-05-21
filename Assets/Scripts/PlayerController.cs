@@ -44,12 +44,35 @@ public class PlayerController : MonoBehaviour
         Animate();
     }
 
-    public void Projectile(int spawnNum)
+    public void Projectile()
     {
+        if (GetComponent<Damager>().health >= GetComponent<Damager>().initialHealth && anim.GetBool("isWalking") == false)
+        {
+            int spawnNum = 0;
+            if (Input.GetKey("up"))
+            {
+                spawnNum = 3;
+            }
+            else if (Input.GetKey("down"))
+            {
+                spawnNum = 2;
+            }
+            else if (Input.GetKey("left"))
+            {
+                spawnNum = 1;
+            }
+            else if (Input.GetKey("right"))
+            {
+                spawnNum = 0;
+            }
+            projectile = spawn[spawnNum];
 
-        projectile = spawn[spawnNum];
+            ProjectileGO = Instantiate(projectilePrefab, projectile.position, projectile.rotation) as GameObject;
+        }
+    }
 
-        ProjectileGO = Instantiate(projectilePrefab, projectile.position, projectile.rotation) as GameObject;
+    public void ProjectileEnd()
+    {
         anim.SetBool("Projectile", false);
     }
 
@@ -76,13 +99,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(attack[0]))
         {
             anim.SetTrigger("Attack");
-            if (GetComponent<Damager>().health >= GetComponent<Damager>().initialHealth)
-            {
+           
+  
                 Debug.Log("GO");
-                anim.SetBool("Projectile", true);
+                //anim.SetBool("Projectile", true);
                 //anim.
-                //Projectile();
-            }
+                Projectile();
         }
     }
 
