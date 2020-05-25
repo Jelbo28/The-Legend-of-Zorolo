@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     Transform[] spawn;
     [SerializeField]
+    int facingDirection = 0;
+    [SerializeField]
     GameObject projectilePrefab;
 
     private Animator anim;
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
         moveHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
         moveVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
         transform.Translate(moveHorizontal, moveVertical, 0f);
+        FacingDirection();
         Animate();
     }
 
@@ -48,24 +51,24 @@ public class PlayerController : MonoBehaviour
     {
         if (GetComponent<Damager>().health >= GetComponent<Damager>().initialHealth && anim.GetBool("isWalking") == false)
         {
-            int spawnNum = 0;
-            if (Input.GetKey("up"))
-            {
-                spawnNum = 3;
-            }
-            else if (Input.GetKey("down"))
-            {
-                spawnNum = 2;
-            }
-            else if (Input.GetKey("left"))
-            {
-                spawnNum = 1;
-            }
-            else if (Input.GetKey("right"))
-            {
-                spawnNum = 0;
-            }
-            projectile = spawn[spawnNum];
+            //int spawnNum = 0;
+            //if (Input.GetKey("up"))
+            //{
+            //    spawnNum = 3;
+            //}
+            //else if (Input.GetKey("down"))
+            //{
+            //    spawnNum = 2;
+            //}
+            //else if (Input.GetKey("left"))
+            //{
+            //    spawnNum = 1;
+            //}
+            //else if (Input.GetKey("right"))
+            //{
+            //    spawnNum = 0;
+            //}
+            projectile = spawn[facingDirection];
 
             ProjectileGO = Instantiate(projectilePrefab, projectile.position, projectile.rotation) as GameObject;
         }
@@ -105,6 +108,30 @@ public class PlayerController : MonoBehaviour
                 //anim.SetBool("Projectile", true);
                 //anim.
                 Projectile();
+        }
+    }
+
+    void FacingDirection()
+    {
+        if (Input.GetKeyDown("w") || Input.GetKeyDown("up"))
+        {
+            facingDirection = 0;
+            //Debug.Log("up");
+        }
+        else if (Input.GetKeyDown("s") || Input.GetKeyDown("down"))
+        {
+            facingDirection = 1;
+            //Debug.Log("down");
+        }
+        else if (Input.GetKeyDown("a") || Input.GetKeyDown("left"))
+        {
+            facingDirection = 2;
+            //Debug.Log("left");
+        }
+        else if (Input.GetKeyDown("d") || Input.GetKeyDown("right"))
+        {
+            facingDirection = 3;
+            //Debug.Log("right");
         }
     }
 
